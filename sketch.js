@@ -115,4 +115,3 @@ function displayBeads() {
         isDisplayingBeads = false;
     }
 }
-8
