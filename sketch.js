@@ -24,7 +24,9 @@ function setup() {
 function draw() {
     background(255);
 
-    console.log("Canvas is rendering");
+    if (millis() - lastTypedTime > idleTime) {
+        isDisplayingBeads = true;
+    }
 
     if (isDisplayingBeads) {
         displayBeads();
@@ -87,40 +89,31 @@ function createBeadsBasedOnSentiment(score) {
 
     beads.push(bead);
     console.log("Bead created: ", bead);
-    beadIndex = beads.length - 1;
-    letterIndex = 0;
 }
 
 function displayBeads() {
     fill(0);
 
-    console.log("Bead index: ", beadIndex, "Letter index: ", letterIndex);
-
-    if (beadIndex < beads.length && beads[beadIndex] !== undefined) {
-        if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
-            letterIndex++;
+    for (let i = 0; i < beads.length; i++) {
+        let currentBead = beads[i];
+        
+        if (i === beadIndex && letterIndex < currentBead.length) {
+            if (frameCount % displaySpeed === 0) {
+                letterIndex++;
+            }
         }
 
-        for (let i = 0; i < beadIndex; i++) {
-            let currentBead = beads[i];
-            text(currentBead, width / 2, height / 2 + (i * 30));
-        }
-
-        let currentBead = beads[beadIndex];
         let displayString = currentBead.substring(0, letterIndex);
-        text(displayString, width / 2, height / 2 + (beadIndex * 30));
+        text(displayString, width / 2, height / 2 + (i * 30));
 
-        if (letterIndex >= currentBead.length) {
+        if (letterIndex >= currentBead.length && i === beadIndex) {
             beadIndex++;
             letterIndex = 0;
         }
+    }
 
-        if (beadIndex >= beads.length) {
-            isDisplayingBeads = false;
-        }
-    } else {
-        console.error("Invalid bead at index " + beadIndex);
+    if (beadIndex >= beads.length) {
+        isDisplayingBeads = false;
     }
 }
-
 
