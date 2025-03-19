@@ -95,37 +95,37 @@ function createBeadsBasedOnSentiment(score) {
 }
 
 function displayBeads() {
-    console.log("Drawing beads... Beads count: " + beads.length);
-
-    if (beads.length === 0) {
-        console.log("No beads to display.");
-        return;
-    }
-
     fill(0);
 
-    for (let i = 0; i < beads.length; i++) {
+    if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
+        letterIndex++;
+    }
+
+    // Loop through all the beads up to beadIndex
+    for (let i = 0; i < beadIndex; i++) {
         let currentBead = beads[i];
-
-        // Safety check to ensure currentBead is defined before accessing its length
-        if (currentBead && i === beadIndex && letterIndex < currentBead.length) {
-            if (frameCount % displaySpeed === 0) {
-                letterIndex++;
-            }
-        }
-
         if (currentBead) {
-            let displayString = currentBead.substring(0, letterIndex);
-            text(displayString, width / 2, height / 2 + (i * 30));
-        }
-
-        if (letterIndex >= currentBead.length && i === beadIndex) {
-            beadIndex++;
-            letterIndex = 0;
+            text(currentBead, width / 2, height / 2 + (i * 30));
         }
     }
 
+    // Handle the current bead
+    let currentBead = beads[beadIndex];
+    if (currentBead) {
+        let displayString = currentBead.substring(0, letterIndex);
+        text(displayString, width / 2, height / 2 + (beadIndex * 30));
+    }
+
+    // Once the current bead is fully displayed, move to the next bead
+    if (letterIndex >= currentBead.length) {
+        beadIndex++;
+        letterIndex = 0;
+    }
+
+    // Stop displaying if all beads are processed
     if (beadIndex >= beads.length) {
         isDisplayingBeads = false;
     }
+}
+
 }
