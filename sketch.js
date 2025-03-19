@@ -102,6 +102,7 @@ function displayBeads() {
 
     fill(0);
 
+    // Loop through all the beads and display them
     for (let i = 0; i < beads.length; i++) {
         let currentBead = beads[i];
 
