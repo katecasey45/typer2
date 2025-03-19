@@ -101,7 +101,14 @@ function createBeadsBasedOnSentiment(score) {
 function displayBeads() {
     fill(0);
 
-    // Only increment letterIndex if the current bead exists
+    // Ensure that beadIndex is within bounds of beads array
+    if (beadIndex >= beads.length) {
+        console.log("All beads displayed.");
+        isDisplayingBeads = false;
+        return;
+    }
+
+    // Only increment letterIndex if the current bead exists and it's not fully displayed
     if (beads[beadIndex] && frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
         letterIndex++;
     }
@@ -123,12 +130,7 @@ function displayBeads() {
 
     // Once the current bead is fully displayed, move to the next bead
     if (currentBead && letterIndex >= currentBead.length) {
-        beadIndex++;
+        beadIndex++;  // Only move to next bead if the current one is fully displayed
         letterIndex = 0;
-    }
-
-    // Stop displaying if all beads are processed
-    if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;
     }
 }
