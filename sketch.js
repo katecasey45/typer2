@@ -56,10 +56,6 @@ function sendText() {
     } else {
         console.log("Socket not ready.");
     } 
-    else {
-    sentence += key;
-    lastTypedTime = millis();
-}
 }
 
 function openHandler() {
