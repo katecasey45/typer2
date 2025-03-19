@@ -24,9 +24,7 @@ function setup() {
 function draw() {
     background(255);
 
-    if (millis() - lastTypedTime > idleTime) {
-        isDisplayingBeads = true;
-    }
+    console.log("Canvas is rendering");
 
     if (isDisplayingBeads) {
         displayBeads();
@@ -65,6 +63,8 @@ function openHandler() {
 
 function messageHandler(event) {
     var msg = event.data;
+    console.log("Received message: ", msg);
+
     if (msg != 0) {
         console.log("Received sentiment value: " + msg);
         createBeadsBasedOnSentiment(parseFloat(msg));
@@ -86,12 +86,16 @@ function createBeadsBasedOnSentiment(score) {
     }
 
     beads.push(bead);
+    console.log("Bead created: ", bead);
     beadIndex = beads.length - 1;
     letterIndex = 0;
 }
 
 function displayBeads() {
     fill(0);
+
+    console.log("Bead index: ", beadIndex, "Letter index: ", letterIndex);
+
     if (beadIndex < beads.length && beads[beadIndex] !== undefined) {
         if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
             letterIndex++;
@@ -111,9 +115,12 @@ function displayBeads() {
             letterIndex = 0;
         }
 
+        if (beadIndex >= beads.length) {
+            isDisplayingBeads = false;
+        }
     } else {
-
         console.error("Invalid bead at index " + beadIndex);
     }
 }
+
 
