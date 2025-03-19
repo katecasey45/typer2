@@ -89,14 +89,22 @@ function createBeadsBasedOnSentiment(score) {
 
     beads.push(bead);
     console.log("Bead created: ", bead);
+    console.log("Current beads: ", beads);
 }
 
 function displayBeads() {
+    console.log("Drawing...");
+
+    if (beads.length === 0) {
+        console.log("No beads to display.");
+        return; // Early return if no beads are available to display
+    }
+
     fill(0);
 
     for (let i = 0; i < beads.length; i++) {
         let currentBead = beads[i];
-        
+
         if (i === beadIndex && letterIndex < currentBead.length) {
             if (frameCount % displaySpeed === 0) {
                 letterIndex++;
@@ -107,13 +115,12 @@ function displayBeads() {
         text(displayString, width / 2, height / 2 + (i * 30));
 
         if (letterIndex >= currentBead.length && i === beadIndex) {
-            beadIndex++;
-            letterIndex = 0;
+            beadIndex++;   // move to the next bead only when the current one finishes
+            letterIndex = 0; // reset for next bead
         }
     }
 
     if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;
+        isDisplayingBeads = false;  // stop typing when all beads are done
     }
 }
-
