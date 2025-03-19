@@ -89,48 +89,41 @@ function createBeadsBasedOnSentiment(score) {
         bead = "grey bead";
     }
 
-    // Only add bead if it's valid (non-empty string)
-    if (bead && bead.trim() !== "") {
-        beads.push(bead);
-    }
-
+    beads.push(bead);
     console.log("Bead created: ", bead);
-    console.log("Current beads: ", beads);
+    beadIndex = beads.length - 1;
+    letterIndex = 0;
 }
 
 function displayBeads() {
     fill(0);
 
-    // Ensure that beadIndex is within bounds of beads array
-    if (beadIndex >= beads.length) {
-        console.log("All beads displayed.");
-        isDisplayingBeads = false;
-        return;
-    }
+    console.log("Bead index: ", beadIndex, "Letter index: ", letterIndex);
 
-    // Only increment letterIndex if the current bead exists and it's not fully displayed
-    if (beads[beadIndex] && frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
-        letterIndex++;
-    }
+    if (beadIndex < beads.length && beads[beadIndex] !== undefined) {
+        if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
+            letterIndex++;
+        }
 
-    // Loop through all the beads up to beadIndex
-    for (let i = 0; i < beadIndex; i++) {
-        let currentBead = beads[i];
-        if (currentBead) {
+        for (let i = 0; i < beadIndex; i++) {
+            let currentBead = beads[i];
             text(currentBead, width / 2, height / 2 + (i * 30));
         }
-    }
 
-    // Handle the current bead (check if it's valid first)
-    let currentBead = beads[beadIndex];
-    if (currentBead) {
+        let currentBead = beads[beadIndex];
         let displayString = currentBead.substring(0, letterIndex);
         text(displayString, width / 2, height / 2 + (beadIndex * 30));
-    }
 
-    // Once the current bead is fully displayed, move to the next bead
-    if (currentBead && letterIndex >= currentBead.length) {
-        beadIndex++;  // Only move to next bead if the current one is fully displayed
-        letterIndex = 0;
+        if (letterIndex >= currentBead.length) {
+            beadIndex++;
+            letterIndex = 0;
+        }
+
+        if (beadIndex >= beads.length) {
+            isDisplayingBeads = false;
+        }
+    } else {
+
+        console.error("Invalid bead at index " + beadIndex);
     }
 }
