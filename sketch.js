@@ -92,26 +92,28 @@ function createBeadsBasedOnSentiment(score) {
 
 function displayBeads() {
     fill(0);
+    if (beadIndex < beads.length && beads[beadIndex] !== undefined) {
+        if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
+            letterIndex++;
+        }
 
-    if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
-        letterIndex++;
-    }
+        for (let i = 0; i < beadIndex; i++) {
+            let currentBead = beads[i];
+            text(currentBead, width / 2, height / 2 + (i * 30));
+        }
 
-    for (let i = 0; i < beadIndex; i++) {
-        let currentBead = beads[i];
-        text(currentBead, width / 2, height / 2 + (i * 30));
-    }
+        let currentBead = beads[beadIndex];
+        let displayString = currentBead.substring(0, letterIndex);
+        text(displayString, width / 2, height / 2 + (beadIndex * 30));
 
-    let currentBead = beads[beadIndex];
-    let displayString = currentBead.substring(0, letterIndex);
-    text(displayString, width / 2, height / 2 + (beadIndex * 30));
+        if (letterIndex >= currentBead.length) {
+            beadIndex++;
+            letterIndex = 0;
+        }
 
-    if (letterIndex >= currentBead.length) {
-        beadIndex++;
-        letterIndex = 0;
-    }
+    } else {
 
-    if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;
+        console.error("Invalid bead at index " + beadIndex);
     }
 }
+
