@@ -22,6 +22,7 @@ function setup() {
 }
 
 function draw() {
+    console.log("Drawing...");
     background(255);
 
     if (millis() - lastTypedTime > idleTime) {
@@ -51,11 +52,12 @@ function keyTyped() {
 function sendText() {
     let text = sentence;
 
-    if (socket.readyState == 1) {
+    if (socket.readyState === WebSocket.OPEN) {
         socket.send(text);
         console.log("Sent: " + text);
     } else {
-        console.log("Socket not ready.");
+        console.log("Socket not ready. Retrying...");
+        setTimeout(() => sendText(), 1000);
     }
 }
 
@@ -93,16 +95,15 @@ function createBeadsBasedOnSentiment(score) {
 }
 
 function displayBeads() {
-    console.log("Drawing...");
+    console.log("Drawing beads... Beads count: " + beads.length);
 
     if (beads.length === 0) {
         console.log("No beads to display.");
-        return; // Early return if no beads are available to display
+        return;
     }
 
     fill(0);
 
-    // Loop through all the beads and display them
     for (let i = 0; i < beads.length; i++) {
         let currentBead = beads[i];
 
@@ -116,12 +117,12 @@ function displayBeads() {
         text(displayString, width / 2, height / 2 + (i * 30));
 
         if (letterIndex >= currentBead.length && i === beadIndex) {
-            beadIndex++;   // move to the next bead only when the current one finishes
-            letterIndex = 0; // reset for next bead
+            beadIndex++;
+            letterIndex = 0;
         }
     }
 
     if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;  // stop typing when all beads are done
+        isDisplayingBeads = false;
     }
 }
