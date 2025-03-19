@@ -89,7 +89,11 @@ function createBeadsBasedOnSentiment(score) {
         bead = "grey bead";
     }
 
-    beads.push(bead);
+    // Only add bead if it's valid (non-empty string)
+    if (bead && bead.trim() !== "") {
+        beads.push(bead);
+    }
+
     console.log("Bead created: ", bead);
     console.log("Current beads: ", beads);
 }
@@ -97,7 +101,8 @@ function createBeadsBasedOnSentiment(score) {
 function displayBeads() {
     fill(0);
 
-    if (frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
+    // Only increment letterIndex if the current bead exists
+    if (beads[beadIndex] && frameCount % displaySpeed === 0 && letterIndex < beads[beadIndex].length) {
         letterIndex++;
     }
 
@@ -109,7 +114,7 @@ function displayBeads() {
         }
     }
 
-    // Handle the current bead
+    // Handle the current bead (check if it's valid first)
     let currentBead = beads[beadIndex];
     if (currentBead) {
         let displayString = currentBead.substring(0, letterIndex);
@@ -117,7 +122,7 @@ function displayBeads() {
     }
 
     // Once the current bead is fully displayed, move to the next bead
-    if (letterIndex >= currentBead.length) {
+    if (currentBead && letterIndex >= currentBead.length) {
         beadIndex++;
         letterIndex = 0;
     }
@@ -126,6 +131,4 @@ function displayBeads() {
     if (beadIndex >= beads.length) {
         isDisplayingBeads = false;
     }
-}
-
 }
