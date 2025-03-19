@@ -22,7 +22,6 @@ function setup() {
 }
 
 function draw() {
-    background(255);
 
     if (millis() - lastTypedTime > idleTime) {
 
@@ -56,8 +55,8 @@ function sendText() {
         console.log("Sent:" + text);
     } else {
         console.log("Socket not ready.");
-    }
-else {
+    } 
+    else {
     sentence += key;
     lastTypedTime = millis();
 }
@@ -98,11 +97,6 @@ function createBeadsBasedOnSentiment(score) {
 function displayBeads() {
     fill(0);
 
-    // Increment letterIndex gradually based on frame count for a typing effect
-    if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
-        letterIndex++;
-    }
-
     // Draw all beads up to beadIndex
     for (let i = 0; i < beadIndex; i++) {
         let bead = beads[i];
@@ -110,6 +104,11 @@ function displayBeads() {
     }
 
     let currentBead = beads[beadIndex];
+
+    if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
+        letterIndex++;
+    }
+    
     let displayString = currentBead.substring(0, letterIndex);
     text(displayString, width / 2, height / 2 + (beadIndex * 30));
 
