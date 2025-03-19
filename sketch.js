@@ -1,7 +1,7 @@
 let sentence = '';
 let beads = [];
 let lastTypedTime = 0;
-let idleTime = 10000;
+let idleTime = 8000;
 let isDisplayingBeads = false;
 let beadIndex = 0;
 let letterIndex = 0;
@@ -57,6 +57,10 @@ function sendText() {
     } else {
         console.log("Socket not ready.");
     }
+else {
+    sentence += key;
+    lastTypedTime = millis();
+}
 }
 
 function openHandler() {
@@ -65,17 +69,13 @@ function openHandler() {
 
 function messageHandler(event) {
     var msg = event.data;
-    console.log("Received message:", msg);
-
     if (msg != 0) {
-        console.log("Received sentiment value:", msg);
-        createBeadsBasedOnSentiment(parseFloat(msg));  // Create beads based on sentiment
+        console.log("Received sentiment value: " + msg);
+        createBeadsBasedOnSentiment(parseFloat(msg));
     } else {
         console.log("That statement came back as neutral  ╰(*°▽°*)╯");
-        createBeadsBasedOnSentiment(0);  // Create neutral bead
+        createBeadsBasedOnSentiment(0);
     }
-
-    console.log("Beads array after creation:", beads);
 }
 
 function createBeadsBasedOnSentiment(score) {
@@ -98,14 +98,6 @@ function createBeadsBasedOnSentiment(score) {
 function displayBeads() {
     fill(0);
 
-    // Check if beadIndex is within bounds of the beads array
-    if (beadIndex >= beads.length || !beads[beadIndex]) {
-        console.error("Invalid bead at index " + beadIndex);
-        return; // Exit the function if no valid bead exists
-    }
-
-    let currentBead = beads[beadIndex]; // Assign currentBead here before using it
-
     // Increment letterIndex gradually based on frame count for a typing effect
     if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
         letterIndex++;
@@ -117,7 +109,7 @@ function displayBeads() {
         text(bead, width / 2, height / 2 + (i * 30));
     }
 
-    // Display the current bead being typed
+    let currentBead = beads[beadIndex];
     let displayString = currentBead.substring(0, letterIndex);
     text(displayString, width / 2, height / 2 + (beadIndex * 30));
 
