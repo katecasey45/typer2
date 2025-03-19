@@ -99,23 +99,29 @@ function displayBeads() {
 
     // Draw all beads up to beadIndex
     for (let i = 0; i < beadIndex; i++) {
-        let bead = beads[i];
-        text(bead, width / 2, height / 2 + (i * 30));
+         let currentBead = beads[beadIndex];
+
+         if (i === beadIndex) {
+            // Only reveal the current bead's text character by character
+            if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
+                letterIndex++;
+            }
+            let displayString = currentBead.substring(0, letterIndex);
+            text(displayString, width / 2, height / 2 + (i * 30));
+        } else {
+            // Display all fully typed beads
+            text(currentBead, width / 2, height / 2 + (i * 30));
+        }
+
+        // When a bead is fully typed, move to the next one
+        if (letterIndex >= currentBead.length && i === beadIndex) {
+            beadIndex++;
+            letterIndex = 0;
+        }
     }
 
-    let currentBead = beads[beadIndex];
-
-    if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
-        letterIndex++;
+    // Stop displaying beads when all beads are typed out
+    if (beadIndex >= beads.length) {
+        isDisplayingBeads = false;
     }
-    
-    let displayString = currentBead.substring(0, letterIndex);
-    text(displayString, width / 2, height / 2 + (beadIndex * 30));
-
-    // Once current bead is fully displayed, move to the next bead
-    if (letterIndex >= currentBead.length) {
-        beadIndex++;
-        letterIndex = 0;
-    }
-
 }
