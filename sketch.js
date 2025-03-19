@@ -95,23 +95,23 @@ function createBeadsBasedOnSentiment(score) {
 function displayBeads() {
     fill(0);
    
-        if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
-            letterIndex++;
-        }
+    let currentBead = beads[beadIndex]; // Assign currentBead here before using it
 
-        // Draw all beads up to beadIndex
-        for (let i = 0; i < beadIndex; i++) {
-            let currentBead = beads[i];
-            text(currentBead, width / 2, height / 2 + (i * 30));
-        }
-
-        let currentBead = beads[beadIndex]
-        let displayString = currentBead.substring(0, letterIndex);
-        text(displayString, width / 2, height / 2 + (beadIndex * 30));
-
-        if (letterIndex >= currentBead.length) {
-            beadIndex++;
-            letterIndex = 0;
-        }
-
+    if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
+        letterIndex++;
     }
+
+    // Draw all beads up to beadIndex
+    for (let i = 0; i < beadIndex; i++) {
+        let currentBead = beads[i];
+        text(currentBead, width / 2, height / 2 + (i * 30));
+    }
+
+    let displayString = currentBead.substring(0, letterIndex);
+    text(displayString, width / 2, height / 2 + (beadIndex * 30));
+
+    if (letterIndex >= currentBead.length) {
+        beadIndex++;
+        letterIndex = 0;
+    }
+}
