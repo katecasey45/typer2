@@ -119,8 +119,4 @@ function displayBeads() {
         letterIndex = 0;
     }
 
-    // Once all beads are displayed, stop displaying them
-    if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;
-    }
 }
