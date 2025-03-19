@@ -107,13 +107,13 @@ function displayBeads() {
         text(displayString, width / 2, height / 2 + (i * 30));
 
         if (letterIndex >= currentBead.length && i === beadIndex) {
-            beadIndex++;   // move to the next bead only when the current one finishes
-            letterIndex = 0; // reset for next bead
+            beadIndex++;
+            letterIndex = 0;
         }
     }
 
     if (beadIndex >= beads.length) {
-        isDisplayingBeads = false;  // stop typing when all beads are done
+        isDisplayingBeads = false;
     }
 }
 
