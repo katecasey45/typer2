@@ -107,14 +107,17 @@ function displayBeads() {
     for (let i = 0; i < beads.length; i++) {
         let currentBead = beads[i];
 
-        if (i === beadIndex && letterIndex < currentBead.length) {
+        // Safety check to ensure currentBead is defined before accessing its length
+        if (currentBead && i === beadIndex && letterIndex < currentBead.length) {
             if (frameCount % displaySpeed === 0) {
                 letterIndex++;
             }
         }
 
-        let displayString = currentBead.substring(0, letterIndex);
-        text(displayString, width / 2, height / 2 + (i * 30));
+        if (currentBead) {
+            let displayString = currentBead.substring(0, letterIndex);
+            text(displayString, width / 2, height / 2 + (i * 30));
+        }
 
         if (letterIndex >= currentBead.length && i === beadIndex) {
             beadIndex++;
