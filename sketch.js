@@ -65,14 +65,17 @@ function openHandler() {
 
 function messageHandler(event) {
     var msg = event.data;
+    console.log("Received message:", msg);
 
     if (msg != 0) {
-        console.log("Received sentiment value: " + msg);
-        createBeadsBasedOnSentiment(parseFloat(msg));
+        console.log("Received sentiment value:", msg);
+        createBeadsBasedOnSentiment(parseFloat(msg));  // Create beads based on sentiment
     } else {
         console.log("That statement came back as neutral  ╰(*°▽°*)╯");
-        createBeadsBasedOnSentiment(0);
+        createBeadsBasedOnSentiment(0);  // Create neutral bead
     }
+
+    console.log("Beads array after creation:", beads);
 }
 
 function createBeadsBasedOnSentiment(score) {
@@ -94,24 +97,38 @@ function createBeadsBasedOnSentiment(score) {
 
 function displayBeads() {
     fill(0);
-   
+
+    // Check if beadIndex is within bounds of the beads array
+    if (beadIndex >= beads.length || !beads[beadIndex]) {
+        console.error("Invalid bead at index " + beadIndex);
+        return; // Exit the function if no valid bead exists
+    }
+
     let currentBead = beads[beadIndex]; // Assign currentBead here before using it
 
+    // Increment letterIndex gradually based on frame count for a typing effect
     if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
         letterIndex++;
     }
 
     // Draw all beads up to beadIndex
     for (let i = 0; i < beadIndex; i++) {
-        let currentBead = beads[i];
-        text(currentBead, width / 2, height / 2 + (i * 30));
+        let bead = beads[i];
+        text(bead, width / 2, height / 2 + (i * 30));
     }
 
+    // Display the current bead being typed
     let displayString = currentBead.substring(0, letterIndex);
     text(displayString, width / 2, height / 2 + (beadIndex * 30));
 
+    // Once current bead is fully displayed, move to the next bead
     if (letterIndex >= currentBead.length) {
         beadIndex++;
         letterIndex = 0;
+    }
+
+    // Once all beads are displayed, stop displaying them
+    if (beadIndex >= beads.length) {
+        isDisplayingBeads = false;
     }
 }
