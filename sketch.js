@@ -59,6 +59,7 @@ function sendText() {
     } else {
         console.log("Socket not ready.");
     }
+    return text; 
 }
 
 function openHandler() {
