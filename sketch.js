@@ -67,19 +67,23 @@ function openHandler() {
 
 function messageHandler(event) {
     var msg = event.data;
-    console.log("Received sentiment value: " + msg);
-    if (msg != 0) {
-        console.log("Creating bead based on sentiment value:", msg);
-        createBeadsBasedOnSentiment(parseFloat(msg));  // Create bead based on sentiment
-    } else {
-        console.log("That statement came back as neutral  ╰(*°▽°*)╯");
-        createBeadsBasedOnSentiment(0);  // Create neutral bead if sentiment is 0
+    console.log("Received sentiment value: ", msg); // Log the raw received sentiment
+
+    // Parse the sentiment value and ensure it's a valid number
+    let sentimentScore = parseFloat(msg);
+    if (isNaN(sentimentScore)) {
+        console.error("Invalid sentiment value received:", msg); // Handle invalid sentiment values
+        sentimentScore = 0;  // Default to neutral if invalid sentiment
     }
+
+    // Proceed to create the bead based on valid sentiment
+    createBeadsBasedOnSentiment(sentimentScore);
 }
 
 function createBeadsBasedOnSentiment(score) {
     let bead = '';
 
+    // Ensure the score is valid and handle appropriately
     if (score > 0) {
         bead = "yellow bead";
     } else if (score < 0) {
@@ -88,12 +92,17 @@ function createBeadsBasedOnSentiment(score) {
         bead = "grey bead";
     }
 
-    // Add bead to beads array
-    beads.push(bead);
-    beadIndex = beads.length - 1;  // Update bead index to the last added bead
-    letterIndex = 0;  // Reset letterIndex for new bead
+    // Ensure the bead is a valid string before pushing it to the array
+    if (typeof bead !== 'string' || bead.trim() === '') {
+        console.error("Invalid bead created: ", bead); // Log if an invalid bead is created
+        return; // Skip adding the invalid bead
+    }
 
-    console.log("Bead created:", bead);
+    beads.push(bead);
+    beadIndex = beads.length - 1;
+    letterIndex = 0;
+
+    console.log("Bead created:", bead); // Log the created bead
 }
 
 function displayBeads() {
