@@ -82,17 +82,17 @@ function createBeadsBasedOnSentiment(score) {
         bead = "grey bead";
     }
 
-    beads.push(bead);
-    beadIndex = beads.length - 1;
-    letterIndex = 0;
+    beads = [bead];  // Clear the previous beads for a new sentence
+    beadIndex = 0;   // Reset the beadIndex for the new sentence
+    letterIndex = 0; // Reset the letterIndex for the new sentence
 }
 
 function displayBeads() {
     fill(0);
 
-    // Draw all beads up to beadIndex
+    // Loop through all the beads up to beadIndex
     for (let i = 0; i < beads.length; i++) {
-        let currentBead = beads[i];  // Corrected this to beads[i]
+        let currentBead = beads[i];  // Correctly access each bead in the array
 
         if (i === beadIndex) {
             // Only reveal the current bead's text character by character
@@ -106,7 +106,7 @@ function displayBeads() {
             text(currentBead, width / 2, height / 2 + (i * 30));
         }
 
-        // When a bead is fully typed, move to the next one
+        // When the current bead is fully typed, move to the next one
         if (letterIndex >= currentBead.length && i === beadIndex) {
             beadIndex++;
             letterIndex = 0;
