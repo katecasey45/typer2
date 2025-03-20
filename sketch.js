@@ -24,7 +24,6 @@ function setup() {
 function draw() {
     background(255);
 
-    // If idle time has passed, start displaying beads
     if (millis() - lastTypedTime > idleTime) {
         isDisplayingBeads = true;
     }
@@ -35,7 +34,6 @@ function draw() {
 }
 
 function keyTyped() {
-    // If punctuation is typed, send the sentence and create a bead
     if (key === '.' || key === '?' || key === '!') {
         if (sentence.length > 0) {
             let bead = sendText();
@@ -102,6 +100,12 @@ function displayBeads() {
     for (let i = 0; i <= beadIndex; i++) {
         let currentBead = beads[i];
 
+        // Make sure currentBead is a valid string
+        if (typeof currentBead !== 'string') {
+            console.error("Invalid bead at index " + i);
+            continue; // Skip invalid beads
+        }
+
         // If we are typing the current bead
         if (i === beadIndex) {
             // Gradually reveal characters for the current bead
@@ -127,3 +131,4 @@ function displayBeads() {
         isDisplayingBeads = false;
     }
 }
+
