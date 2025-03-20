@@ -40,13 +40,13 @@ function keyTyped() {
         if (sentence.length > 0) {
             let bead = sendText();
             beads.push(bead); // Add the bead to the array
-            sentence = '';
-            lastTypedTime = millis();
-            isDisplayingBeads = false; // Stop displaying when new sentence is typed
+            sentence = ''; // Reset the sentence
+            lastTypedTime = millis(); // Reset idle time
+            isDisplayingBeads = false; // Stop displaying while new sentence is typed
         }
     } else {
-        sentence += key;
-        lastTypedTime = millis();
+        sentence += key; // Append the typed key to the sentence
+        lastTypedTime = millis(); // Reset idle time
     }
 }
 
@@ -58,6 +58,7 @@ function sendText() {
     } else {
         console.log("Socket not ready.");
     }
+    return text; // Return the sentence as a bead
 }
 
 function openHandler() {
@@ -68,10 +69,10 @@ function messageHandler(event) {
     var msg = event.data;
     if (msg != 0) {
         console.log("Received sentiment value: " + msg);
-        createBeadsBasedOnSentiment(parseFloat(msg));
+        createBeadsBasedOnSentiment(parseFloat(msg)); // Create bead based on sentiment
     } else {
         console.log("That statement came back as neutral  ╰(*°▽°*)╯");
-        createBeadsBasedOnSentiment(0);
+        createBeadsBasedOnSentiment(0); // Create neutral bead
     }
 }
 
@@ -86,23 +87,24 @@ function createBeadsBasedOnSentiment(score) {
         bead = "grey bead";
     }
 
-    // Add the new bead to the beads array
+    // Push bead to the beads array
     beads.push(bead);
 
-    // Reset beadIndex and letterIndex for the new bead
-    beadIndex = beads.length - 1;  // Start typing out the new bead
+    // Start from the last added bead
+    beadIndex = beads.length - 1;
     letterIndex = 0;
 }
 
 function displayBeads() {
-    fill(0);
+    fill(0); // Set text color to black
 
-    // Loop through and display all beads up to beadIndex
+    // Loop through all beads up to beadIndex
     for (let i = 0; i <= beadIndex; i++) {
         let currentBead = beads[i];
 
-        // If we are at the current bead, reveal it character by character
+        // If we are typing the current bead
         if (i === beadIndex) {
+            // Gradually reveal characters for the current bead
             if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
                 letterIndex++;
             }
@@ -113,16 +115,15 @@ function displayBeads() {
             text(currentBead, width / 2, height / 2 + (i * 30));
         }
 
-        // When a bead is fully typed, move to the next one
+        // Move to the next bead once the current one is fully typed
         if (letterIndex >= currentBead.length && i === beadIndex) {
             beadIndex++;
             letterIndex = 0;
         }
     }
 
-    // Stop displaying beads when all beads are typed out
+    // If all beads are typed, stop displaying them
     if (beadIndex >= beads.length) {
         isDisplayingBeads = false;
     }
 }
-
