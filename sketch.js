@@ -80,12 +80,20 @@ function messageHandler(event) {
 function createBeadsBasedOnSentiment(score) {
     let bead = '';
 
-    if (score > 0) {
+    if (score > 0.7) {
+        bead = "green bead";
+    } else if (score > 0.3) {
         bead = "yellow bead";
+    } else if (score > 0) {
+        bead = "light yellow bead"; 
+    } else if (score < -0.7) {
+        bead = "dark blue bead"; 
+    } else if (score < -0.3) {
+        bead = "blue bead"; 
     } else if (score < 0) {
-        bead = "blue bead";
+        bead = "light blue bead"; 
     } else {
-        bead = "grey bead";
+        bead = "grey bead"; 
     }
 
     beads.push(bead);
