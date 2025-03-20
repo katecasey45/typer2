@@ -22,12 +22,10 @@ function setup() {
 }
 
 function draw() {
-
     if (millis() - lastTypedTime > idleTime) {
+        isDisplayingBeads = true;
+    }
 
-            isDisplayingBeads = true;
-        }
-  
     if (isDisplayingBeads) {
         displayBeads();
     }
@@ -55,7 +53,7 @@ function sendText() {
         console.log("Sent:" + text);
     } else {
         console.log("Socket not ready.");
-    } 
+    }
 }
 
 function openHandler() {
@@ -87,17 +85,16 @@ function createBeadsBasedOnSentiment(score) {
     beads.push(bead);
     beadIndex = beads.length - 1;
     letterIndex = 0;
-
 }
 
 function displayBeads() {
     fill(0);
 
     // Draw all beads up to beadIndex
-    for (let i = 0; i < beadIndex; i++) {
-         let currentBead = beads[beadIndex];
+    for (let i = 0; i < beads.length; i++) {
+        let currentBead = beads[i];  // Corrected this to beads[i]
 
-         if (i === beadIndex) {
+        if (i === beadIndex) {
             // Only reveal the current bead's text character by character
             if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
                 letterIndex++;
