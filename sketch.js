@@ -98,47 +98,49 @@ function createBeadsBasedOnSentiment(score) {
         return; // Skip adding the invalid bead
     }
 
+    console.log("Bead created:", bead); // Log the created bead
     beads.push(bead);
     beadIndex = beads.length - 1;
     letterIndex = 0;
-
-    console.log("Bead created:", bead); // Log the created bead
 }
 
 function displayBeads() {
-    fill(0);  // Set text color to black
+    fill(0);
 
-    // Loop through all beads, display them letter by letter
-    for (let i = 0; i < beads.length; i++) {
+    // Log beads array to check for any undefined values
+    console.log("Beads array: ", beads);
+
+    // Draw all beads up to beadIndex
+    for (let i = 0; i < beadIndex; i++) {
         let currentBead = beads[i];
-
-        // Debugging: Log each bead before processing
-        console.log("Current bead at index", i, ":", currentBead);
-
-        // Ensure currentBead is a valid string
-        if (typeof currentBead !== 'string' || currentBead === '') {
+        
+        if (currentBead === undefined || currentBead === null) {
             console.error("Invalid bead at index " + i);
-            continue;  // Skip invalid beads
+            continue; // Skip this invalid bead
         }
 
-        // If we are typing the current bead
-        if (i === beadIndex) {
-            // Gradually reveal characters for the current bead
-            if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
-                letterIndex++;
-            }
-            let displayString = currentBead.substring(0, letterIndex);
-            text(displayString, width / 2, height / 2 + (i * 30));  // Display the current bead
-        } else {
-            // Display already fully typed beads
-            text(currentBead, width / 2, height / 2 + (i * 30));
-        }
+        text(currentBead, width / 2, height / 2 + (i * 30));
+    }
 
-        // Move to the next bead once the current one is fully typed
-        if (letterIndex >= currentBead.length && i === beadIndex) {
-            beadIndex++;  // Move to the next bead
-            letterIndex = 0;  // Reset letter index for the next bead
-        }
+    let currentBead = beads[beadIndex];
+
+    if (currentBead === undefined || currentBead === null) {
+        console.error("Invalid bead at beadIndex: " + beadIndex);
+        return; // Skip drawing this bead if it's invalid
+    }
+
+    let displayString = currentBead.substring(0, letterIndex);
+    text(displayString, width / 2, height / 2 + (beadIndex * 30));
+
+    // Increment letterIndex for typing effect
+    if (frameCount % displaySpeed === 0 && letterIndex < currentBead.length) {
+        letterIndex++;
+    }
+
+    // When a bead is fully typed, move to the next one
+    if (letterIndex >= currentBead.length) {
+        beadIndex++;
+        letterIndex = 0;
     }
 
     // Stop displaying beads when all beads are typed out
@@ -146,5 +148,3 @@ function displayBeads() {
         isDisplayingBeads = false;
     }
 }
-
-
