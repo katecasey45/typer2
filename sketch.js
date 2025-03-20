@@ -81,17 +81,17 @@ function createBeadsBasedOnSentiment(score) {
     let bead = '';
 
     if (score > 0.7) {
-        bead = "green bead";
+        bead = "pink bead";
     } else if (score > 0.3) {
-        bead = "yellow bead";
+        bead = "blue bead";
     } else if (score > 0) {
-        bead = "light yellow bead"; 
+        bead = "green bead"; 5
     } else if (score < -0.7) {
-        bead = "dark blue bead"; 
+        bead = "black bead"; 
     } else if (score < -0.3) {
-        bead = "blue bead"; 
+        bead = "maroon bead"; 
     } else if (score < 0) {
-        bead = "light blue bead"; 
+        bead = "red bead"; 
     } else {
         bead = "grey bead"; 
     }
